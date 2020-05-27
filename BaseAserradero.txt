@@ -1,0 +1,507 @@
+
+create database aserradero;
+
+
+CREATE TABLE USUARIOS (ID_USUARIO numeric , NOM_USUARIO varchar(13), CONTRASEÑA integer);
+
+create table Direccion(idDireccion int not null auto_increment,Colonia varchar (30),Calle varchar(30),Estado varchar(40),Municipio varchar (40),primary key(idDireccion));
+
+alter table Direccion auto_increment=300
+
+insert into Direccion (Colonia,Calle,Estado,Municipio) values ('Benito Juarez','hidalgo','oaxaca','Atatlahuca');
+insert into Direccion (Colonia,Calle,Estado,Municipio) values ('San Diego','las palmas','oaxaca','Independecia');
+insert into Direccion (Colonia,Calle,Estado,Municipio) values ('El Mirador','Las flores','oaxaca','Las nieves');
+insert into Direccion (Colonia,Calle,Estado,Municipio) values ('San Sebastian','16 de septiembre','oaxaca','Saragoza');
+insert into Direccion (Colonia,Calle,Estado,Municipio) values ('San Bartolo','Emiliano zapata','oaxaca','intundujia');
+
+create table bit_Direccion(idBitacora int auto_increment primary key,fecha datetime,usuario varchar(40),
+Colonia_new varchar(30), Colonia_Ant varchar(40),Calle_new varchar(40),Calle_ant varchar (40),
+Estado_new varchar(40),Estado_ant varchar(40),Municipio_new varchar(40),Municipio_ant,accion varchar (15))engine=innodb;
+
+create trigger insertar_direccion after insert on Direccion
+for each row
+insert into bit_direccion(fecha,usuario,calle_Numero_new,colonia_new,estado_new,municipio_new,accion)values
+ (now(),user(),new.Calle,new.Colonia,new.Estado, new.Municipio,'inserto');
+
+alter table bit_Persona auto_increment=5000;
+
+create trigger insertar_persona after insert on Persona
+for each row
+insert into bit_Persona(fecha,usuario,Nombre_new,Apellidos_new,Telefono_new,accion)values (now(),user(),new.Nombre,new.Apellidos,new.Telefono,'inserto');
+
+ create trigger actualizar_direccion after update on Direccion
+for each row
+ insert into bit_direccion(fecha,usuario,calle_Numero_new,calle_Numero_Ant,colonia_new,colonia_Ant,estado_new,estado_Ant,municipio_new,Municipio_Ant,accion)
+    values (now(),user(),new.Calle,old.Calle,new.Colonia,old.Colonia,new.Estado,old.Estado,
+    new.Municipio,old.Municipio,'Modifico');
+
+create trigger eliminar_direccion after delete on Direccion
+for each row
+insert into bit_direccion(fecha,usuario,calle_Numero_new,calle_Numero_Ant,colonia_new,colonia_Ant,estado_new,estado_Ant,municipio_new,Municipio_Ant,accion)
+    values (now(),user(),old.Calle,old.Colonia,old.Estado,
+    old.Municipio,'Elimino');
+
+
+create trigger actualizar_persona after update on Persona
+for each row
+insert into bit_Persona(fecha,usuario,Nombre_new,Nombre_Ant,Apellidos_new,Apellidos_Ant,Telefono_new,Telefono_Ant,accion)
+values (now(),user(),new.Nombre,old.Nombre,new.Apellidos,old.Apellidos,new.Telefono,old.Telefono,'Modifico');
+
+create trigger eliminar_Persona after delete on Persona
+for each row
+insert into bit_direccion(fecha,usuario,Nombre_new,Nombre_Ant,Apellidos_new,Apellidos_Ant,Telefono_new,Telefono_Ant,accion)
+values (now(),user(),old.Nombre,old.Apellidos,old.Telefono,'Elimino');
+
+
+
+
+
+create table Persona(idPersona int not null auto_increment,Nombre varchar (40), Apellidos varchar (30),Telefono int, idDireccion int,primary key(idPersona));
+
+alter table Persona auto_increment=200;
+
+insert into Persona (Nombre,Apellidos,Telefono,idDireccion) values ('Josafat','Hernandez', 5559322,300);
+insert into Persona (Nombre,Apellidos,Telefono,idDireccion) values ('Eduardo','Garcia',5550123,301);
+insert into Persona (Nombre,Apellidos,Telefono,idDireccion)  values ('Juan Jose','Martinez',9653456,302);
+insert into Persona (Nombre,Apellidos,Telefono,idDireccion)  values ('Rosio','Martinez',9653456,302); 
+insert into Persona (Nombre,Apellidos,Telefono,idDireccion) values ('Rosa','Gaspar',953125,304);
+
+insert into Persona (Nombre,Apellidos,Telefono,idDireccion) values ('Javier','Gonzales', 0123453,305);
+insert into Persona (Nombre,Apellidos,Telefono,idDireccion) values ('Shunaxi','Perez',12345667,306);
+insert into Persona (Nombre,Apellidos,Telefono,idDireccion) values ('Osvaldo','Baños',1234654,307);
+insert into Persona (Nombre,Apellidos,Telefono,idDireccion) values ('Josue','Salas',345678,308);
+insert into Persona (Nombre,Apellidos,Telefono,idDireccion) values ('Fernando','picazzo',673545,309);
+
+insert into Persona (Nombre,Apellidos,Telefono,idDireccion) values ('Einstein','Morelos',098707,310);
+insert into Persona (Nombre,Apellidos,Telefono,idDireccion) values ('Bob','Marcial',9845687,311);
+insert into Persona (Nombre,Apellidos,Telefono,idDireccion) values ('Alma','Velez',4325753,312);
+insert into Persona (Nombre,Apellidos,Telefono,idDireccion) values ('Francisca','Salas',1234353,313);
+insert into Persona (Nombre,Apellidos,Telefono,idDireccion) values ('Josefa','Rafael',123532,314);
+
+insert into Persona (Nombre,Apellidos,Telefono,idDireccion) values ('Alejandro','Silva',098745,315);
+insert into Persona (Nombre,Apellidos,Telefono,idDireccion) values ('Armando','Garcia',05032034,316);
+insert into Persona (Nombre,Apellidos,Telefono,idDireccion) values ('Daniel','ortiz',08923524,317);
+insert into Persona (Nombre,Apellidos,Telefono,idDireccion) values ('Luis','Martinez',2353532,318);
+insert into Persona (Nombre,Apellidos,Telefono,idDireccion) values ('Jorge','Garcia',1354253,319);
+insert into Persona (Nombre,Apellidos,Telefono,idDireccion) values ('Erick','Garcia',23456464,320);
+
+
+
+create table bit_Persona(idBitacora int auto_increment primary key,fecha datetime,usuario varchar(40),
+Nombre_new varchar(30), Nombre_Ant varchar(40),Apellidos_new varchar(40),Apellidos_ant varchar (40),
+Telefono_new int,Telefono_ant int,accion varchar (15))engine=innodb;
+alter table bit_Persona auto_increment=5000;
+
+create trigger insertar_persona after insert on Persona
+for each row
+insert into bit_Persona(fecha,usuario,Nombre_new,Apellidos_new,Telefono_new,accion)values 
+(now(),user(),new.Nombre,new.Apellidos,new.Telefono,'inserto');
+
+
+create trigger actualizar_persona after update on Persona
+for each row
+insert into bit_Persona(fecha,usuario,Nombre_new,Nombre_Ant,Apellidos_new,Apellidos_Ant,Telefono_new,Telefono_Ant,accion)
+values (now(),user(),new.Nombre,old.Nombre,new.Apellidos,old.Apellidos,new.Telefono,old.Telefono,'Modifico');
+
+create trigger eliminar_Persona after delete on Persona
+for each row
+insert into bit_direccion(fecha,usuario,Nombre_new,Nombre_Ant,Apellidos_new,Apellidos_Ant,Telefono_new,Telefono_Ant,accion)
+values (now(),user(),old.Nombre,old.Apellidos,old.Telefono,'Elimino');
+
+alter table PROVEEDOR add constraint fk_persona foreign key (id_Persona) references Persona(idPersona);
+alter table VENTAS add constraint fk_venta foreign key (id_Pedido) references PEDIDO(id_Pedido);
+alter table CLIENTE add constraint fk_cliente foreign key (id_Persona) references Persona(idPersona);
+alter table COMPRAS add constraint fk_compras foreign key (id_compras) references PEDIDO(id_Pedido);
+alter table PROVEEDOR add constraint fk_provee foreign key (id_Persona) references Persona(idPersona);
+alter table EMPLEADO add constraint fk_empleado foreign key (id_Persona) references Persona(idPersona);
+alter table EMPLEADO add constraint fk_empleadoP foreign key (id_Puesto) references PUESTO(id_Puesto);
+
+
+insert into PROVEEDOR values (219);
+
+
+
+CREATE TABLE PUESTO (ID_PUESTO INT NOT NULL PRIMARY KEY AUTO_INCREMENT, NOM_PUESTO VARCHAR (20) NOT NULL,
+	SUELDO DECIMAL NOT NULL)ENGINE=INNODB;
+
+
+create table BIT_PUESTO (ID_BIT int auto_increment  primary key, FECHA datetime, USUARIO varchar (30),
+ PUESTO_NEW varchar (40), PUESTO_ANT varchar (40),SUELDO_NEW varchar (40), SUELDO_ANT varchar (40),
+ ACCION varchar (15))engine=innodb;
+ALTER TABLE BIT_PUESTO AUTO_INCREMENT=1000; 
+
+create trigger INSERTAR_PUESTO after insert
+on PUESTO
+for each row
+insert into BIT_PUESTO (FECHA, USUARIO, PUESTO_NEW,SUELDO_NEW, ACCION) values (NOW(),
+ USER(), NEW.NOM_PUESTO, NEW.SUELDO, 'Inserto');
+
+create trigger ACTUALIZAR_PUESTO after update
+on PUESTO
+for each row
+insert into BIT_PUESTO (FECHA, USUARIO,PUESTO_NEW, PUESTO_ANT, SUELDO_NEW, SUELDO_ANT,ACCION)
+ values (now(), user(),  NEW.NOM_PUESTO, OLD.NOM_PUESTO, NEW.SUELDO, OLD.SUELDO,  'Modifico'); 
+
+
+create trigger ELIMINAR_PUESTO after delete
+on PUESTO
+for each row
+insert into BIT_PUESTO(FECHA, USUARIO, PUESTO_ANT, SUELDO_ANT )VALUES(NOW(),USER(),
+OLD.NOM_PUESTO,OLD.SUELDO, 'Elimino'); 
+
+INSERT INTO PUESTO (NOM_PUESTO,SUELDO) VALUES ('PRESIDENTE','1800.00');
+INSERT INTO PUESTO (NOM_PUESTO,SUELDO) VALUES ('SECRETARIO','1800');
+INSERT INTO PUESTO (NOM_PUESTO,SUELDO) VALUES ('TESORERO','1800');
+INSERT INTO PUESTO (NOM_PUESTO,SUELDO) VALUES ('JEFE DE PERSONAL','1800');
+INSERT INTO PUESTO (NOM_PUESTO,SUELDO) VALUES ('ASERRADOR','2000');
+INSERT INTO PUESTO (NOM_PUESTO,SUELDO) VALUES ('MEDIDOR','1500');
+INSERT INTO PUESTO (NOM_PUESTO,SUELDO) VALUES ('VOLTEADOR','1200');
+INSERT INTO PUESTO (NOM_PUESTO,SUELDO) VALUES ('ARRIMADOR','1200');
+INSERT INTO PUESTO (NOM_PUESTO,SUELDO) VALUES ('CUÑERO','1200');
+INSERT INTO PUESTO (NOM_PUESTO,SUELDO) VALUES ('DESORILLADOR','1200');
+INSERT INTO PUESTO (NOM_PUESTO,SUELDO) VALUES ('CLASIFICADOR','1200');
+INSERT INTO PUESTO (NOM_PUESTO,SUELDO) VALUES ('ASERRINERO','1100');
+INSERT INTO PUESTO (NOM_PUESTO,SUELDO) VALUES ('GENERAL','1000');
+INSERT INTO PUESTO (NOM_PUESTO,SUELDO) VALUES ('MONTACARGAS','2000');
+INSERT INTO PUESTO (NOM_PUESTO,SUELDO) VALUES ('JEFE DE MONTE','1800');
+INSERT INTO PUESTO (NOM_PUESTO,SUELDO) VALUES ('GRULLERO','2000');
+INSERT INTO PUESTO (NOM_PUESTO,SUELDO) VALUES ('MOTOSIERRISTA','2000');
+INSERT INTO PUESTO (NOM_PUESTO,SUELDO) VALUES ('CABLERO','1600');
+INSERT INTO PUESTO (NOM_PUESTO,SUELDO) VALUES ('CHOFER RABON','1900');
+INSERT INTO PUESTO (NOM_PUESTO,SUELDO) VALUES ('CHOFER TORTON','2000');
+
+CREATE TABLE TRANSPORTE (ID_TRANSPORTE INT NOT NULL PRIMARY KEY AUTO_INCREMENT , APODO VARCHAR (20),
+	PLACAS VARCHAR (8) NOT NULL, CAPACIDAD_KILOS INT NOT NULL)ENGINE=INNODB;
+ALTER TABLE TRANSPORTE AUTO_INCREMENT=100;
+
+create table BIT_TRANSPORTE (ID_BIT INT auto_increment  primary key NOT NULL, FECHA datetime NOT NULL,
+ USUARIO varchar (30) NOT NULL, ID_TRANSPORTE varchar (8) NOT NULL, APODO_NEW VARCHAR (20), APODO_ANT varchar (20),
+PLACAS_NEW varchar (40), PLACAS_ANT varchar (40), CAPACIDAD_NEW INT, CAPACIDAD_ANT INT, ACCION varchar (15))engine=innodb; 
+ALTER TABLE BIT_TRANSPORTE AUTO_INCREMENT=2000;
+
+create trigger INSERTAR_TRANSPORTE after insert
+on TRANSPORTE
+for each row
+insert into BIT_TRANSPORTE (FECHA, USUARIO, ID_TRANSPORTE,APODO_NEW,PLACAS_NEW, CAPACIDAD_NEW, ACCION) values (NOW(),
+ USER(), NEW.ID_TRANSPORTE,NEW.APODO, NEW.PLACAS,NEW.CAPACIDAD_KILOS, 'Inserto');
+
+create trigger ACTUALIZAR_TRANSPORTE after update
+on TRANSPORTE
+for each row
+insert into BIT_TRANSPORTE (FECHA, USUARIO,ID_TRANSPORTE, APODO_NEW, APODO_ANT, PLACAS_NEW, PLACAS_ANT,
+CAPACIDAD_NEW, CAPACIDAD_ANT,ACCION) values (now(), user(), NEW.ID_TRANSPORTE, NEW.APODO, OLD.APODO, NEW.PLACAS,
+ OLD.PLACAS,NEW.CAPACIDAD_KILOS,OLD.CAPACIDAD_KILOS, 'Modifico'); 
+
+
+create trigger ELIMINAR_TRANSPORTE after delete
+on TRANSPORTE
+for each row
+insert into BIT_TRANSPORTE(FECHA, USUARIO, ID_TRANSPORTE, APODO_ANT, PLACAS_ANT, CAPACIDAD_ANT )VALUES(NOW(),USER(), 
+OLD.ID_TRANSPORTE, OLD.APODO,OLD.PLACAS,OLD.CAPACIDAD_KILOS, 'Elimino'); 
+
+INSERT INTO TRANSPORTE (APODO, PLACAS, CAPACIDAD_KILOS) VALUES ('TORTON','RX-13631','20000');
+INSERT INTO TRANSPORTE (APODO, PLACAS, CAPACIDAD_KILOS)VALUES ('AZUL','RU-97254','10000');
+INSERT INTO TRANSPORTE (APODO, PLACAS, CAPACIDAD_KILOS)VALUES ('ROJO','RU-97255','10000');
+INSERT INTO TRANSPORTE (APODO, PLACAS, CAPACIDAD_KILOS)VALUES ('CANARIO','RU-97256','10000');
+INSERT INTO TRANSPORTE (APODO, PLACAS, CAPACIDAD_KILOS)VALUES ('TRIBILIN','RW-11521','9000');
+INSERT INTO TRANSPORTE (APODO, PLACAS, CAPACIDAD_KILOS)VALUES ('SAN PEDRO','RU-64589','3500');
+
+create table Direccion(idDireccion int not null auto_increment,Colonia varchar (30),Calle varchar(30),
+Estado varchar(40),Municipio varchar (40),primary key(idDireccion));
+
+alter table Direccion auto_increment=300;
+
+create table bit_Direccion(idBitacora int auto_increment primary key,fecha datetime,usuario varchar(40),
+Colonia_new varchar(30), Colonia_Ant varchar(40),Calle_new varchar(40),Calle_ant varchar (40),
+Estado_new varchar(40),Estado_ant varchar(40),Municipio_new varchar(40),Municipio_ant varchar(40),accion varchar (15))engine=innodb;
+
+create trigger insertar_direccion after insert on Direccion
+for each row
+insert into bit_direccion(fecha,usuario,calle_new,colonia_new,estado_new,municipio_new,accion)values
+ (now(),user(),new.Calle,new.Colonia,new.Estado, new.Municipio,'inserto');
+
+create trigger actualizar_direccion after update on Direccion
+for each row
+ insert into bit_direccion(fecha,usuario,calle_new,calle_Ant,colonia_new,colonia_Ant,estado_new,estado_Ant,municipio_new,Municipio_Ant,accion)
+    values (now(),user(),new.Calle,old.Calle,new.Colonia,old.Colonia,new.Estado,old.Estado,
+    new.Municipio,old.Municipio,'Modifico');
+
+create trigger eliminar_direccion after delete on Direccion
+for each row
+insert into bit_direccion(fecha,usuario,calle_Ant,colonia_Ant,estado_Ant,Municipio_Ant,accion)
+    values (now(),user(),old.Calle,old.Colonia,old.Estado,
+    old.Municipio,'Elimino');
+
+insert into Direccion (Colonia,Calle,Estado,Municipio) values ('Benito Juarez','hidalgo','oaxaca','Atatlahuca');
+insert into Direccion (Colonia,Calle,Estado,Municipio) values ('San Diego','las palmas','oaxaca','Independecia');
+insert into Direccion (Colonia,Calle,Estado,Municipio) values ('El Mirador','Las flores','oaxaca','Las nieves');
+insert into Direccion (Colonia,Calle,Estado,Municipio) values ('San Sebastian','16 de septiembre','oaxaca','Saragoza');
+insert into Direccion (Colonia,Calle,Estado,Municipio) values ('San Bartolo','Emiliano zapata','oaxaca','intundujia');
+
+create table Persona(idPersona int not null auto_increment,Nombre varchar (40), Apellidos varchar (30),Telefono int,
+ idDireccion int,primary key(idPersona));
+
+alter table Persona auto_increment=200;
+
+create table bit_Persona(idBitacora int auto_increment primary key,fecha datetime,usuario varchar(40),
+Nombre_new varchar(30), Nombre_Ant varchar(40),Apellidos_new varchar(40),Apellidos_ant varchar (40),
+Telefono_new int,Telefono_ant int,accion varchar (15))engine=innodb;
+alter table bit_Persona auto_increment=5000;
+
+create trigger insertar_persona after insert on Persona
+for each row
+insert into bit_Persona(fecha,usuario,Nombre_new,Apellidos_new,Telefono_new,accion)values 
+(now(),user(),new.Nombre,new.Apellidos,new.Telefono,'inserto');
+
+
+create trigger actualizar_persona after update on Persona
+for each row
+insert into bit_Persona(fecha,usuario,Nombre_new,Nombre_Ant,Apellidos_new,Apellidos_Ant,Telefono_new,Telefono_Ant,accion)
+values (now(),user(),new.Nombre,old.Nombre,new.Apellidos,old.Apellidos,new.Telefono,old.Telefono,'Modifico');
+
+create trigger eliminar_Persona after delete on Persona
+for each row
+insert into bit_direccion(fecha,usuario,Nombre_new,Nombre_Ant,Apellidos_new,Apellidos_Ant,Telefono_new,Telefono_Ant,accion)
+values (now(),user(),old.Nombre,old.Apellidos,old.Telefono,'Elimino');
+
+insert into Persona (Nombre,Apellidos,Telefono,idDireccion) values ('Josafat','Hernandez', 5559322,300);
+insert into Persona (Nombre,Apellidos,Telefono,idDireccion) values ('Eduardo','Garcia',5550123,301);
+insert into Persona (Nombre,Apellidos,Telefono,idDireccion)  values ('Juan Jose','Martinez',9653456,302);
+insert into Persona (Nombre,Apellidos,Telefono,idDireccion)  values ('Rosio','Martinez',9653456,302); 
+insert into Persona (Nombre,Apellidos,Telefono,idDireccion) values ('Rosa','Gaspar',953125,304);
+insert into Persona (Nombre,Apellidos,Telefono,idDireccion) values ('Javier','Gonzales', 0123453,305);
+insert into Persona (Nombre,Apellidos,Telefono,idDireccion) values ('Shunaxi','Perez',12345667,306);
+insert into Persona (Nombre,Apellidos,Telefono,idDireccion) values ('Osvaldo','Baños',1234654,307);
+insert into Persona (Nombre,Apellidos,Telefono,idDireccion) values ('Josue','Salas',345678,308);
+insert into Persona (Nombre,Apellidos,Telefono,idDireccion) values ('Fernando','picazzo',673545,309);
+insert into Persona (Nombre,Apellidos,Telefono,idDireccion) values ('Einstein','Morelos',098707,310);
+insert into Persona (Nombre,Apellidos,Telefono,idDireccion) values ('Bob','Marcial',9845687,311);
+insert into Persona (Nombre,Apellidos,Telefono,idDireccion) values ('Alma','Velez',4325753,312);
+insert into Persona (Nombre,Apellidos,Telefono,idDireccion) values ('Francisca','Salas',1234353,313);
+insert into Persona (Nombre,Apellidos,Telefono,idDireccion) values ('Josefa','Rafael',123532,314);
+insert into Persona (Nombre,Apellidos,Telefono,idDireccion) values ('Alejandro','Silva',098745,315);
+insert into Persona (Nombre,Apellidos,Telefono,idDireccion) values ('Armando','Garcia',05032034,316);
+insert into Persona (Nombre,Apellidos,Telefono,idDireccion) values ('Daniel','ortiz',08923524,317);
+insert into Persona (Nombre,Apellidos,Telefono,idDireccion) values ('Luis','Martinez',2353532,318);
+insert into Persona (Nombre,Apellidos,Telefono,idDireccion) values ('Jorge','Garcia',1354253,319);
+
+
+
+
+CREATE TABLE CLIENTE (ID_CLIENTE INT AUTO_INCREMENT NOT NULL PRIMARY KEY, ID_PERSONA INT NOT NULL)ENGINE=INNODB;
+ALTER TABLE CLIENTE AUTO_INCREMENT=400;
+
+CREATE TABLE PROVEEDOR (ID_PROVEEDOR INT AUTO_INCREMENT NOT NULL PRIMARY KEY, ID_PERSONA INT NOT NULL)ENGINE=INNODB;
+ALTER TABLE PROVEEDOR AUTO_INCREMENT=500;
+
+CREATE TABLE EMPLEADO (ID_EMPLEADO INT AUTO_INCREMENT  NOT NULL PRIMARY KEY, ID_PERSONA INT NOT NULL,
+ ID_PUESTO INT NOT NULL, AREA VARCHAR (20))ENGINE=INNODB;
+ALTER TABLE EMPLEADO AUTO_INCREMENT=600;
+
+CREATE TABLE PEDIDO (ID_PEDIDO INT AUTO_INCREMENT NOT NULL PRIMARY KEY, FECHA DATE,ID_PERSONA INT NOT NULL, 
+NO_REMISION INT, COSTO DECIMAL(8,2), ID_TRANSPORTE INT, VOLUMEN_M3 DECIMAL(6.3), CHOFER INT)ENGINE=INNODB;
+ALTER TABLE PEDIDO AUTO_INCREMENT=700;
+
+INSERT INTO PEDIDO (FECHA, ID_PERSONA, NO_REMISION, COSTO , ID_TRANSPORTE , VOLUMEN_M3 , CHOFER ) 
+ VALUES ('2017/05/20','200','2645','59462.78','100','20.546','600');
+INSERT INTO PEDIDO (FECHA, ID_PERSONA, NO_REMISION, COSTO , ID_TRANSPORTE , VOLUMEN_M3 , CHOFER )
+ VALUES ('2017/05/21','201','2646','56245.32','100','19.256','600');
+INSERT INTO PEDIDO (FECHA, ID_PERSONA, NO_REMISION, COSTO , ID_TRANSPORTE , VOLUMEN_M3 , CHOFER )
+ VALUES ('2017/05/22','202','2647','49587.55','101','19.379','601');
+INSERT INTO PEDIDO (FECHA, ID_PERSONA, NO_REMISION, COSTO , ID_TRANSPORTE , VOLUMEN_M3 , CHOFER )
+ VALUES ('2017/05/23','200','2648','60154.21','102','21.551','602');
+INSERT INTO PEDIDO (FECHA, ID_PERSONA, NO_REMISION, COSTO , ID_TRANSPORTE , VOLUMEN_M3 , CHOFER )
+ VALUES ('2017/05/24','200','2649','48265.44','103','18.245','603');
+INSERT INTO PEDIDO (FECHA, ID_PERSONA, NO_REMISION, COSTO , ID_TRANSPORTE , VOLUMEN_M3 , CHOFER )
+ VALUES ('2017/05/25','202','2650','55649.86','100','19.245','600');
+INSERT INTO PEDIDO (FECHA, ID_PERSONA, NO_REMISION, COSTO , ID_TRANSPORTE , VOLUMEN_M3 , CHOFER )
+ VALUES ('2017/05/26','200','2651','61234.20','100','20.430','600');
+
+Create table BIT_PEDIDO (ID_BIT int auto_increment primary key NOT NULL, FECHA_MODIF datetime NOT NULL,
+ USUARIO varchar (30) NOT NULL, ID_PEDIDO INT NOT NULL, FECHA_NEW DATETIME, FECHA_ANT DATETIME,
+ID_PERSONA INT , REMISION_NEW INT, REMISION_ANT INT , COSTO_NEW DECIMAL,COSTO_ANT DECIMAL, IDTRANSP_NEW INT,
+IDTRANSP_ANT INT, VOLUM3_NEW DECIMAL, VOLUM3_ANT DECIMAL, CHOFER_NEW INT, CHOFER_ANT INT, ACCION varchar (15))engine=innodb; 
+ALTER TABLE ventas AUTO_INCREMENT=3000; 
+
+create trigger INSERTAR_PEDIDO after insert
+on PEDIDO
+for each row
+insert into BIT_PEDIDO (FECHA_MODIF, USUARIO,ID_PEDIDO, FECHA_NEW, ID_PERSONA ,REMISION_NEW, COSTO_NEW,
+ IDTRANSP_NEW, VOLUM3_NEW,CHOFER_NEW, ACCION) values (NOW(),  USER(), NEW.ID_PEDIDO, NEW.FECHA, NEW.ID_PERSONA, 
+ NEW.NO_REMISION, NEW.COSTO, NEW.ID_TRANSPORTE, NEW.VOLUMEN_M3, NEW.CHOFER, 'Inserto');
+
+create trigger ACTUALIZAR_PEDIDO after update
+on PEDIDO
+for each row
+insert into BIT_PEDIDO (FECHA_MODIF, USUARIO,ID_PEDIDO, FECHA_NEW, FECHA_ANT, ID_PERSONA ,REMISION_NEW, REMISION_ANT,COSTO_NEW,
+ COSTO_ANT, IDTRANSP_NEW, IDTRANSP_ANT, VOLUM3_NEW, VOLUM3_ANT, CHOFER_NEW, CHOFER_ANT, ACCION) values (now(), user(),
+ NEW.ID_PEDIDO, NEW.FECHA, OLD.FECHA, NEW.ID_PERSONA, NEW.NO_REMISION, OLD.NO_REMISION, NEW.COSTO, OLD.COSTO,
+NEW.ID_TRANSPORTE, OLD.ID_TRANSPORTE, NEW.VOLUMEN_M3, OLD.VOLUMEN_M3, NEW.CHOFER, OLD,CHOFER, 'Modifico'); 
+
+create trigger ELIMINAR_PEDIDO after delete
+on PEDIDO
+for each row
+insert into BIT_PEDIDO(FECHA_MODIF, USUARIO,ID_PEDIDO, FECHA_ANT, ID_PERSONA , REMISION_ANT,
+ COSTO_ANT,  IDTRANSP_ANT,  VOLUM3_ANT,  CHOFER_ANT, ACCION) values (now(), user(),
+ OLD.ID_PEDIDO, OLD.FECHA, OLD.ID_PERSONA,  OLD.NO_REMISION,  OLD.COSTO,
+ OLD.ID_TRANSPORTE,  OLD.VOLUMEN_M3,  OLD,CHOFER, 'Elimino'); 
+
+
+
+CREATE TABLE VENTAS (ID_VENTAS INT AUTO_INCREMENT NOT NULL PRIMARY KEY, ID_PEDIDO INT NOT NULL)ENGINE=INNODB;
+ALTER TABLE ventas AUTO_INCREMENT=800;
+
+CREATE TABLE COMPRAS (ID_COMPRAS INT AUTO_INCREMENT NOT NULL PRIMARY KEY, ID_PEDIDO INT NOT NULL)ENGINE=INNODB;
+ALTER TABLE COMPRAS AUTO_INCREMENT=900;
+
+alter table PROVEEDOR add constraint fk_persona foreign key (id_Persona) references Persona(idPersona);
+alter table VENTAS add constraint fk_venta foreign key (id_Pedido) references PEDIDO(id_Pedido);
+alter table CLIENTE add constraint fk_cliente foreign key (id_Persona) references Persona(idPersona);
+alter table COMPRAS add constraint fk_compras foreign key (id_compras) references PEDIDO(id_Pedido);
+alter table EMPLEADO add constraint fk_empleado foreign key (id_Persona) references Persona(idPersona);
+alter table EMPLEADO add constraint fk_empleadoP foreign key (id_Puesto) references PUESTO(id_Puesto);
+
+ALTER TABLE `madera`.`proveedor` 
+DROP FOREIGN KEY `fk_persona`;
+
+ALTER TABLE `madera`.`proveedor` 
+ADD CONSTRAINT `fk_persona`
+  FOREIGN KEY (`ID_PERSONA`)
+  REFERENCES
+ `madera`.`persona` (`idPersona`)
+  ON DELETE NO ACTION
+  ON UPDATE CASCADE;
+
+ALTER TABLE `madera`.`ventas` 
+DROP FOREIGN KEY `fk_venta`;
+
+ALTER TABLE `madera`.`ventas` 
+ADD CONSTRAINT `fk_venta`
+  FOREIGN KEY (`ID_PEDIDO`)
+  REFERENCES
+ `madera`.`pedido` (`ID_PEDIDO`)
+  ON DELETE NO ACTION
+  ON UPDATE CASCADE;
+
+ALTER TABLE `madera`.`cliente` 
+DROP FOREIGN KEY `fk_cliente`;
+
+ALTER TABLE `madera`.`cliente` 
+ADD CONSTRAINT `fk_cliente`
+  FOREIGN KEY (`ID_PERSONA`)
+  REFERENCES
+ `madera`.`persona` (`idPersona`)
+  ON DELETE NO ACTION
+  ON UPDATE CASCADE;
+
+
+ALTER TABLE `madera`.`compras` 
+DROP FOREIGN KEY `fk_compras`;
+
+ALTER TABLE `madera`.`compras` 
+ADD CONSTRAINT `fk_compras`
+  FOREIGN KEY (`ID_PEDIDO`)
+  REFERENCES
+ `madera`.`pedido` (`ID_PEDIDO`)
+  ON DELETE NO ACTION
+  ON UPDATE CASCADE;
+
+
+ALTER TABLE `madera`.`empleado` 
+DROP FOREIGN KEY `fk_empleado`,
+DROP FOREIGN KEY `fk_empleadoP`;
+
+ALTER TABLE `madera`.`empleado` 
+CHANGE COLUMN `AREA` `AREA` VARCHAR(20) NOT NULL ,
+DROP INDEX `fk_empleado` ,
+
+ADD INDEX `fk_empleadoPersona` (`ID_PERSONA` ASC),
+DROP INDEX `fk_empleadoP` ,
+ADD INDEX `fk_empleadoPuesto` (`ID_PUESTO` ASC);
+
+ALTER TABLE `madera`.`empleado` 
+ADD CONSTRAINT `fk_empleadoPersona`
+  FOREIGN KEY (`ID_PERSONA`)
+  REFERENCES
+ `madera`.`persona` (`idPersona`)
+  ON DELETE NO ACTION
+  ON UPDATE CASCADE,
+
+ADD CONSTRAINT `fk_empleadoPuesto`
+  FOREIGN KEY (`ID_PUESTO`)
+  REFERENCES `madera`.`puesto` (`ID_PUESTO`)
+ 
+ ON DELETE NO ACTION
+  ON UPDATE CASCADE;
+
+
+insert into PROVEEDOR (ID_PERSONA )values (219);
+insert into PROVEEDOR (ID_PERSONA )values (218);
+insert into PROVEEDOR (ID_PERSONA )values (217);
+insert into PROVEEDOR (ID_PERSONA )values (216);
+
+
+
+insert into ventas (ID_PEDIDO )values (700);
+insert into ventas (ID_PEDIDO )values (701);
+insert into ventas (ID_PEDIDO )values (702);
+insert into ventas (ID_PEDIDO )values (703);
+insert into ventas (ID_PEDIDO )values (704);
+insert into ventas (ID_PEDIDO )values (705);
+
+insert into COMPRAS (ID_PEDIDO )values (706);
+
+
+insert into CLIENTE (ID_PERSONA )values (215);
+
+insert into EMPLEADO (ID_PERSONA, ID_PUESTO, AREA )values (200,1 , 'ADMINISTRACION');
+insert into EMPLEADO (ID_PERSONA, ID_PUESTO, AREA )values (201,2, 'ADMINISTRACION' );
+insert into EMPLEADO (ID_PERSONA, ID_PUESTO, AREA )values (202,3 , 'ADMINISTRACION');
+insert into EMPLEADO (ID_PERSONA, ID_PUESTO, AREA)values (203,4 , 'ADMINISTRACION');
+insert into EMPLEADO (ID_PERSONA, ID_PUESTO, AREA )values (204,5, 'PATIO' );
+insert into EMPLEADO (ID_PERSONA, ID_PUESTO, AREA )values (205,6, 'PATIO' );
+insert into EMPLEADO (ID_PERSONA, ID_PUESTO, AREA )values (206,7,'PATIO' );
+insert into EMPLEADO (ID_PERSONA, ID_PUESTO, AREA )values (207,8, 'PATIO' );
+insert into EMPLEADO (ID_PERSONA, ID_PUESTO, AREA )values (208,9 , 'PATIO');
+insert into EMPLEADO (ID_PERSONA, ID_PUESTO, AREA )values (209,10, 'PATIO' );
+insert into EMPLEADO (ID_PERSONA, ID_PUESTO, AREA )values (210,11 , 'PATIO');
+insert into EMPLEADO (ID_PERSONA, ID_PUESTO, AREA )values (211,12, 'PATIO' );
+insert into EMPLEADO (ID_PERSONA, ID_PUESTO, AREA )values (212,13, 'PATIO' );
+insert into EMPLEADO (ID_PERSONA, ID_PUESTO, AREA )values (214,14, 'PATIO' );
+
+
+SELECT ID_EMPLEADO, AREA,NOMBRE, APELLIDOS, NOM_PUESTO, SUELDO
+FROM EMPLEADO INNER JOIN PERSONA  
+ON EMPLEADO.ID_PERSONA=PERSONA.IDPERSONA
+INNER JOIN PUESTO ON EMPLEADO.ID_PUESTO=PUESTO.ID_PUESTO;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
